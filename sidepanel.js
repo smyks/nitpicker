@@ -185,7 +185,7 @@ const tagLabel = (t) => t.category + (t.property ? " › " + t.property : "");
 
 function renderChips() {
   $("chips").innerHTML = tags.map((t, i) =>
-    `<span class="chip">${esc(tagLabel(t))}${t.expectedValue ? ": " + esc(t.currentValue) + " → " + esc(t.expectedValue) : ""}<button data-i="${i}" aria-label="Remove tag">×</button></span>`
+    `<span class="chip">${esc(tagLabel(t))}${t.expectedValue ? ": " + swatches(t.currentValue) + esc(t.currentValue) + " → " + swatches(t.expectedValue) + esc(t.expectedValue) : ""}<button data-i="${i}" aria-label="Remove tag">×</button></span>`
   ).join("");
 }
 
@@ -463,12 +463,18 @@ $("deleteSession").onclick = (e) => confirmClick(e.target, async () => {
 
 // ---------- picker buttons + page events ----------
 
-$("pick").onclick = () => { $("status").textContent = "Picking… click an element on the page."; send({ type: "pick" }); };
+// The page toggles picking itself; the button just mirrors its state ("picking" / "selected" / "cancelled" messages).
+const showPicking = (on) => { $("pickLbl").textContent = on ? "Stop picking" : "Pick element"; $("pick").classList.toggle("btn-primary", !on); };
+$("pick").onclick = () => send({ type: "pick" });
 $("parent").onclick = () => send({ type: "parent" });
-$("clear").onclick = () => { resetForm(true); $("status").textContent = "Cleared."; };
+$("clear").onclick = () => { showPicking(false); resetForm(true); $("status").textContent = "Cleared."; };
 
 chrome.runtime.onMessage.addListener((msg) => {
-  if (msg.type === "selected") {
+  if (msg.type === "picking") {
+    showPicking(true);
+    $("status").textContent = "Picking… click an element on the page, or press Stop picking.";
+  } else if (msg.type === "selected") {
+    showPicking(false);
     resetForm(false);
     sel = { d: msg.data, raw: null };
     if (msg.data.tokenNames && msg.data.tokenNames.length) {
@@ -485,6 +491,7 @@ chrome.runtime.onMessage.addListener((msg) => {
       if (sel === s) renderCtx(s.d, { appVersion: p.appVersion || curSession()?.version, reactComponentPath: p.reactComponentPath });
     });
   } else if (msg.type === "cancelled") {
+    showPicking(false);
     $("status").textContent = "Cancelled.";
   }
 });
