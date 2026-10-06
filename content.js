@@ -278,12 +278,12 @@ if (!window.__uifbLoaded) {
     stopPicking();
     if (el) select(el);
   }
-  function onKey(e) {
-    if (e.key !== "Escape") return;
+  function cancelPick() {
     stopPicking();
     box(current);
     chrome.runtime.sendMessage({ type: "cancelled" });
   }
+  function onKey(e) { if (e.key === "Escape") cancelPick(); }
 
   chrome.runtime.onMessage.addListener((msg, _sender, reply) => {
     if (msg.type === "hide" || msg.type === "show") {
@@ -303,12 +303,14 @@ if (!window.__uifbLoaded) {
       });
       return;
     }
-    if (msg.type === "pick" && !picking) {
+    if (msg.type === "pick") { // toggle: a second "pick" (button or shortcut) cancels
+      if (picking) return cancelPick();
       picking = true;
       document.documentElement.classList.add("__uifb-picking");
       addEventListener("mousemove", onMove, true);
       addEventListener("click", onClick, true);
       addEventListener("keydown", onKey, true);
+      chrome.runtime.sendMessage({ type: "picking" });
     } else if (msg.type === "parent" && current && current.parentElement) {
       select(current.parentElement);
     } else if (msg.type === "clear") {

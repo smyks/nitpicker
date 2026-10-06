@@ -44,6 +44,7 @@ input[type="checkbox"] { accent-color: var(--primary); width: 15px; height: 15px
 .chip { display: inline-flex; align-items: center; gap: 2px; padding: 2px 8px; border-radius: var(--r-pill); background: #f1f1f4; color: #3f3f46; font-size: 12px; line-height: 18px; }
 .chip button { border: 0; background: none; padding: 0 2px; color: var(--muted); cursor: pointer; font-size: 14px; line-height: 1; }
 .chip button:hover { color: var(--danger); }
+.swatch { display: inline-block; width: 12px; height: 12px; margin-right: 6px; vertical-align: -2px; border: 1px solid var(--border-strong); border-radius: 3px; background: linear-gradient(var(--c), var(--c)), conic-gradient(#d4d4d8 25%, #fff 0 50%, #d4d4d8 0 75%, #fff 0) 0 0 / 8px 8px; }
 .chip-token { position: relative; background: #eef2ff; color: #3730a3; font: 11px/18px var(--mono); cursor: help; }
 /* Custom tooltip: Chrome's native title tooltips don't show in side panels */
 .chip-token:hover::after {
