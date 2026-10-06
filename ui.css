@@ -1,0 +1,63 @@
+/* Shared design system: tokens + small atomic components. Used by the side panel and inlined into the digest. */
+:root {
+  --bg: #f7f7f8; --surface: #fff; --border: #e4e4e7; --border-strong: #d4d4d8;
+  --text: #18181b; --muted: #71717a;
+  --primary: #18181b; --primary-hover: #3f3f46; --primary-fg: #fff;
+  --accent: #FF3B6B; --accent-soft: #ffe9ef; --danger: #dc2626;
+  --r-sm: 6px; --r-md: 10px; --r-pill: 999px;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .05);
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; font: 13px/1.45 var(--font); color: var(--text); background: var(--bg); }
+[hidden] { display: none !important; }
+h1, h2, h3, p { margin: 0; }
+
+/* Button */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  height: 32px; padding: 0 12px; margin: 0; border: 1px solid var(--border-strong); border-radius: var(--r-sm);
+  background: var(--surface); color: var(--text); font: inherit; font-weight: 500; white-space: nowrap; cursor: pointer;
+}
+.btn:hover:not(:disabled) { background: #f4f4f5; }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn:focus-visible, .input:focus-visible, .tab:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn-primary { background: var(--primary); border-color: var(--primary); color: var(--primary-fg); }
+.btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
+.btn-ghost { border-color: transparent; background: transparent; }
+.btn-danger:hover:not(:disabled) { color: var(--danger); background: #fef2f2; }
+.btn-sm { height: 28px; padding: 0 9px; font-size: 12px; }
+.btn-icon { width: 32px; padding: 0; }
+.btn-sm.btn-icon { width: 28px; }
+.btn svg, .ico { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+/* Input */
+.input {
+  width: 100%; height: 32px; padding: 0 10px; border: 1px solid var(--border-strong); border-radius: var(--r-sm);
+  background: var(--surface); color: inherit; font: inherit;
+}
+textarea.input { height: auto; padding: 8px 10px; resize: vertical; }
+input[type="checkbox"] { accent-color: var(--primary); width: 15px; height: 15px; margin: 0; }
+
+/* Chip, badge, kbd, label */
+.chip { display: inline-flex; align-items: center; gap: 2px; padding: 2px 8px; border-radius: var(--r-pill); background: #f1f1f4; color: #3f3f46; font-size: 12px; line-height: 18px; }
+.chip button { border: 0; background: none; padding: 0 2px; color: var(--muted); cursor: pointer; font-size: 14px; line-height: 1; }
+.chip button:hover { color: var(--danger); }
+.chip-token { position: relative; background: #eef2ff; color: #3730a3; font: 11px/18px var(--mono); cursor: help; }
+/* Custom tooltip: Chrome's native title tooltips don't show in side panels */
+.chip-token:hover::after {
+  content: attr(data-tip); position: absolute; left: 0; bottom: calc(100% + 6px); z-index: 50;
+  width: max-content; max-width: 240px; padding: 4px 8px; border-radius: var(--r-sm);
+  background: var(--primary); color: #fff; font: 11px/1.4 var(--mono); white-space: normal; word-break: break-all;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .2); pointer-events: none;
+}
+.chip-accent { background: var(--accent-soft); color: #be123c; }
+.badge { display: inline-flex; align-items: center; justify-content: center; min-width: 22px; height: 20px; padding: 0 6px; border-radius: var(--r-pill); background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; }
+.kbd { padding: 0 5px; border: 1px solid var(--border-strong); border-bottom-width: 2px; border-radius: 4px; background: var(--surface); color: var(--muted); font: 11px var(--mono); }
+.label { font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.muted { color: var(--muted); }
+.small { font-size: 12px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); box-shadow: var(--shadow); }
+.chips { display: flex; flex-wrap: wrap; gap: 4px; }
+code, .mono { font-family: var(--mono); font-size: 12px; }

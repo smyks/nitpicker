@@ -1,0 +1,10 @@
+#__uifb-overlay {
+  position: fixed; z-index: 2147483647; pointer-events: none; display: none;
+  border: 2px solid #FF3B6B; background: rgba(255, 59, 107, 0.12); box-sizing: border-box;
+}
+.__uifb-pin {
+  position: fixed; z-index: 2147483646; pointer-events: none; display: none;
+  min-width: 20px; height: 20px; padding: 0 5px; box-sizing: border-box; border-radius: 10px;
+  background: #FF3B6B; color: #fff; font: bold 12px/20px system-ui, sans-serif; text-align: center;
+}
+html.__uifb-picking, html.__uifb-picking * { cursor: crosshair !important; }

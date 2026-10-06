@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Nitpicker</title>
+  <link rel="stylesheet" href="ui.css">
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="session">
+      <select id="sessions" class="input" aria-label="Session"></select>
+      <button id="newSession" class="btn btn-icon" title="New session" aria-label="New session"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+      <details class="menu" id="menu">
+        <summary class="btn btn-icon" title="Session actions" aria-label="Session actions"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></summary>
+        <div class="menu-pop card">
+          <button id="renameSession" class="btn btn-ghost">Rename session</button>
+          <button id="deleteSession" class="btn btn-ghost btn-danger">Delete session</button>
+        </div>
+      </details>
+    </div>
+    <div class="row" id="nameRow" hidden>
+      <input id="nameIn" class="input" placeholder="Session name, e.g. FV 2.0 Live page review">
+      <button id="nameOk" class="btn btn-primary">Save</button>
+      <button id="nameCancel" class="btn">Cancel</button>
+    </div>
+    <details class="settings">
+      <summary>Session settings</summary>
+      <div class="field"><label class="label" for="ver">App version</label>
+        <input id="ver" class="input" placeholder="Used only if the page doesn't report one"></div>
+      <div class="field"><label class="label" for="sessNotes">Session notes</label>
+        <textarea id="sessNotes" class="input" rows="2" placeholder="Shown in the exported digest"></textarea></div>
+    </details>
+  </header>
+
+  <div class="actions">
+    <button id="pick" class="btn btn-primary">
+      <svg viewBox="0 0 24 24"><path d="m4 4 7 16 2.5-6.5L20 11z"/></svg> Pick element <span class="kbd">⌥⇧F</span>
+    </button>
+    <button id="parent" class="btn" disabled title="Select the parent element">Parent ↑</button>
+    <button id="clear" class="btn btn-ghost" disabled>Clear</button>
+  </div>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="capture" role="tab">Capture</button>
+    <button class="tab" data-tab="items" role="tab">Items <span class="count" id="count">0</span></button>
+  </nav>
+
+  <main>
+    <section id="tab-capture">
+      <p id="status" class="hint">Click “Pick element”, then click something on the page. Esc cancels.</p>
+      <div id="shots"></div>
+
+      <div id="form" class="card form" hidden>
+        <div class="field"><label class="label" for="title">Title</label>
+          <input id="title" class="input" placeholder="Optional, defaults to the element's text"></div>
+        <div class="field">
+          <span class="label">Tags</span>
+          <div class="grid2"><select id="cat" class="input" aria-label="Category"></select><select id="prop" class="input" aria-label="Property"></select></div>
+          <div class="current"><span class="muted">Current</span> <code id="cur"></code></div>
+          <div class="row"><input id="exp" class="input" list="tokenOptions" placeholder="Expected value or token (optional)"><datalist id="tokenOptions"></datalist><button id="addTag" class="btn">Add</button></div>
+          <div id="chips" class="chips"></div>
+        </div>
+        <div class="field"><label class="label" for="notes">Notes</label>
+          <textarea id="notes" class="input" rows="3" placeholder="What's wrong, and why?"></textarea></div>
+        <div class="form-foot"><button id="save" class="btn btn-primary">Save item</button></div>
+      </div>
+
+      <details class="details"><summary>Element details &amp; styles</summary><div id="ctx"></div></details>
+    </section>
+
+    <section id="tab-items" hidden>
+      <div class="toolbar">
+        <label class="selall"><input type="checkbox" id="selAll"> All</label>
+        <button id="copySel" class="btn btn-sm" disabled>Copy 0 selected</button>
+        <button id="copyAll" class="btn btn-sm" disabled>Copy all</button>
+        <button id="export" class="btn btn-sm btn-primary" disabled>Export HTML</button>
+      </div>
+      <div id="items"></div>
+    </section>
+  </main>
+
+  <div id="lightbox" hidden><img alt=""></div>
+  <div id="toast" hidden></div>
+
+  <script src="config.js"></script>
+  <script src="lib/db.js"></script>
+  <script src="lib/prompt.js"></script>
+  <script src="lib/sentences.js"></script>
+  <script src="lib/export.js"></script>
+  <script src="sidepanel.js"></script>
+</body>
+</html>
